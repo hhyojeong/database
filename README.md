@@ -20,6 +20,9 @@
 ## 데이터베이스 설계 (Database Design)
 총 7개의 핵심 엔터티로 구성되어 있으며, **제3정규형(3NF)**을 준수하여 설계하였습니다.
 
+<img width="1103" height="794" alt="image" src="https://github.com/user-attachments/assets/b7c74f50-02c5-4c75-a2dc-a002e47eaa23" />
+
+
 | 엔터티 (Table) | 설명 | 주요 컬럼 |
 | :--- | :--- | :--- |
 | **치과** (`CLINIC`) | 거래처 병원 정보 | `clinic_id` (PK), `clinic_code` |
