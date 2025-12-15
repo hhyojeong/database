@@ -14,7 +14,6 @@
 ## 👩🏻‍💻 개발 환경 👩🏻‍💻
 * **DBMS**: Oracle Database 
 * **Tool**: Oracle SQL Developer
-* **Language**: SQL 
 
 ---
 
