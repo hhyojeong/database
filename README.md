@@ -2,7 +2,7 @@
 
 > **2025학년도 2학기 데이터베이스 설계 및 구현 프로젝트** > **관계형 데이터베이스(Oracle)를 활용한 기공소 업무 전산화 모델링 및 SQL 구현**
 
-## 1. 프로젝트 개요
+## 💻 프로젝트 개요 💻
 * **과목명**: 데이터베이스
 * **학번/이름**: 202532086 김효정
 
@@ -11,15 +11,14 @@
 
 ---
 
-## 2. 개발 환경 (Environment)
-* **DBMS**: Oracle Database 11g / 19c XE
+##👩🏻‍💻 개발 환경 👩🏻‍💻
+* **DBMS**: Oracle Database 
 * **Tool**: Oracle SQL Developer
-* **Modeling**: ERDCloud / Draw.io
-* **Language**: SQL (Structured Query Language)
+* **Language**: SQL 
 
 ---
 
-## 3. 데이터베이스 설계 (Database Design)
+## 데이터베이스 설계 (Database Design)
 총 7개의 핵심 엔터티로 구성되어 있으며, **제3정규형(3NF)**을 준수하여 설계하였습니다.
 
 | 엔터티 (Table) | 설명 | 주요 컬럼 |
