@@ -1,1 +1,72 @@
-# database
+# database# 🦷 치과(교정) 기공소 관리 시스템 (Dental Lab Management System)
+
+> **2025학년도 2학기 데이터베이스 설계 및 구현 프로젝트** > **관계형 데이터베이스(Oracle)를 활용한 기공소 업무 전산화 모델링 및 SQL 구현**
+
+## 1. 프로젝트 개요
+* **과목명**: 데이터베이스
+* **담당교수**: 김진숙 교수님
+* **학번/이름**: 202532086 김효정
+* **개발 기간**: 2025.12.01 ~ 2025.12.15
+
+### 📌 기획 의도
+기존 치과 기공소 업무에서 사용되던 수기 장부나 엑셀 방식은 의뢰서 누락, 글씨 식별 불가 등 여러 문제가 발생했습니다. 이를 개선하기 위해 **데이터베이스를 구축하여 기공 의뢰부터 제작, 출고, 정산까지의 과정을 효율적으로 관리**하고자 합니다.
+
+---
+
+## 2. 개발 환경 (Environment)
+* **DBMS**: Oracle Database 11g / 19c XE
+* **Tool**: Oracle SQL Developer
+* **Modeling**: ERDCloud / Draw.io
+* **Language**: SQL (Structured Query Language)
+
+---
+
+## 3. 데이터베이스 설계 (Database Design)
+총 7개의 핵심 엔터티로 구성되어 있으며, **제3정규형(3NF)**을 준수하여 설계하였습니다.
+
+| 엔터티 (Table) | 설명 | 주요 컬럼 |
+| :--- | :--- | :--- |
+| **치과** (`CLINIC`) | 거래처 병원 정보 | `clinic_id` (PK), `clinic_code` |
+| **직원** (`MEMBER`) | 기공소 내부 직원 정보 | `member_id` (PK), `role` (권한) |
+| **교정장치** (`PROSTHESIS`) | 제작 가능한 기공물 품목 | `type_id` (PK), `unit_price` |
+| **재료** (`MATERIAL`) | 원자재 재고 관리 | `mat_id` (PK), `stock_qty` |
+| **의뢰서** (`WORK_ORDER`) | 기공물 제작 의뢰 정보 | `order_id` (PK), `status` (진행상태) |
+| **공정단계** (`PROCESS_STEP`) | 의뢰별 작업 진행 이력 | `step_id` (PK), `finish_dt` |
+| **결제** (`PAYMENT`) | 치과별 입금 및 수금 내역 | `pay_id` (PK), `amount` |
+
+---
+
+## 4. SQL 구현 내용 (Implementation)
+첨부된 `dental.sql` 파일에는 **DDL, DML**과 함께 **30개 이상의 시나리오별 SQL**이 작성되어 있습니다.
+
+### ✅ 주요 구현 기능
+1.  **데이터 조회**: `JOIN`을 활용한 의뢰 내역 및 담당자 조회, `GROUP BY`를 이용한 치과별 매출 집계
+2.  **데이터 조작**: `UPDATE`를 통한 진행 상태 변경 및 재고 차감, `INSERT`/`DELETE` 트랜잭션 처리
+3.  **고급 검색**:
+    * `Subquery` (ALL, ANY, EXISTS)를 활용한 악성 재고 및 미수금 치과 조회
+    * `CASE`, `DECODE` 등을 활용한 조건별 데이터 출력
+    * `LIKE`, `BETWEEN`, `IN` 등 다양한 연산자 활용
+
+---
+
+## 5. 주요 이슈 및 해결 (Troubleshooting)
+
+### 💡 역정규화 적용 (Performance Tuning)
+* **문제**: 기공물 단가(`unit_price`)는 해마다 변동될 수 있습니다. 단순히 `JOIN`으로 가격을 계산하면, 과거(작년) 의뢰 건도 현재 인상된 가격으로 조회되는 치명적인 오류가 발생합니다.
+* **해결**: `WORK_ORDER` 테이블에 `FINAL_PRICE` 컬럼을 추가하는 **역정규화**를 수행하여, 의뢰 시점의 확정된 금액을 저장함으로써 데이터의 정확성을 보장했습니다.
+
+### 💡 데이터 무결성 (Integrity)
+* **제약조건**: `WORK_ORDER`의 `CLINIC_ID` 등 외래키(FK) 설정을 통해 존재하지 않는 치과의 의뢰가 등록되는 것을 원천 차단했습니다.
+* **ENUM 대체**: Oracle에는 ENUM 타입이 없으므로, 애플리케이션 레벨 또는 `CHECK` 제약조건을 고려하여 상태값('접수', '제작중', '완료')을 관리하도록 설계했습니다.
+
+---
+
+## 6. 설치 및 실행 방법 (How to Run)
+이 프로젝트는 **단 하나의 SQL 파일**로 DB 구축부터 데이터 조회까지 가능합니다.
+
+1.  Oracle DB가 설치된 환경에서 **SQL Developer**를 실행합니다.
+2.  `dental.sql` 파일을 엽니다.
+3.  **스크립트 실행 (단축키: F5)** 버튼을 누릅니다.
+    * *기존 테이블 삭제(DROP) → 테이블 생성(CREATE) → 샘플 데이터 입력(INSERT) → 30개 SQL 예제 실행*이 순차적으로 진행됩니다.
+
+---
